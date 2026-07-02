@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:15-alpine
@@ -16,6 +14,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-net
 
   auth:
     build: .
@@ -28,6 +28,12 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - app-net
 
 volumes:
   postgres_data:
+
+networks:
+  app-net:
+    driver: bridge
